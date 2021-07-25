@@ -1,5 +1,6 @@
 from file import encrypt, decrypt
 from keys import write_key, load_key
+from cryptography.fernet import Fernet
 
 
 # generate and write a new key
