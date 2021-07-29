@@ -1,43 +1,45 @@
-from file import encrypt, decrypt
-from keys import write_key, load_key
+import os
+from action import Action
 from cryptography.fernet import Fernet
+from helper import format_path_abs
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+action = Action()
+
+action.generate_key()
 
 
-# generate and write a new key
-write_key()
 
+message = "some secret message"
 
-# load the previously generated key
-key = load_key()
-
-
-message = "some secret message".encode()
-
-# initialize the Fernet class
-f = Fernet(key)
-
-
-# encrypt the message
-encrypted = f.encrypt(message)
+encrypted = action.encrypt(message)
 
 
 # print how it looks
 print(encrypted)
 
 
-decrypted_encrypted = f.decrypt(encrypted)
+decrypted_encrypted = action.decrypt(encrypted)
+
 print(decrypted_encrypted)
 
+action.specific_target = "file"
 
-# uncomment this if it's the first time you run the code, to generate the key
-# write_key()
-# load the key
-key = load_key()
-# file name
-file = "data.csv"
-# encrypt it
-encrypt(file, key)
+print(action.specific_target)
 
 
-# decrypt the file
-decrypt(file, key)
+base_path = os.getenv('PATH_ABS_FILE')
+filename = "data.json"
+
+
+path_abs_file = format_path_abs(base_path, filename)
+
+action.encrypt(path_abs_file)
+
+action.decrypt(path_abs_file)
+
+
+
